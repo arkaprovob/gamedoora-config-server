@@ -23,6 +23,14 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
+    - name: Set up Java
+      uses: actions/setup-java@v1
+      with:
+        java-version: 11      
+
+    - name: Package with Maven
+      run: mvn package
+
     - name: Build Image
       id: build-image
       uses: redhat-actions/buildah-build@v2
