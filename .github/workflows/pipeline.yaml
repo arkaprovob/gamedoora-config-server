@@ -65,4 +65,6 @@ jobs:
     
     - name: Helm install
       run: |
-        helm upgrade --install confog-server config-server
+        helm upgrade --install \
+        --set image.tag=${{ github.sha }} \
+        confog-server config-server
