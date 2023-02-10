@@ -36,7 +36,7 @@ jobs:
       uses: redhat-actions/buildah-build@v2
       with:
         image: config-server
-        tags: ${{env.GITHUB_REF_SLUG}}
+        tags: latest ${{ github.sha }}
         containerfiles: |
           ./Containerfile
     
