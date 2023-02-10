@@ -1,0 +1,41 @@
+name: Build and Push Docker Image
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Bump version
+        default: v1.0.0
+        required: true
+
+env:
+  QUAY_USERNAME: ${{ secrets.QUAY_USERNAME }}
+  QUAY_PASSWORD: ${{ secrets.QUAY_PASSWORD }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Build Docker Image
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        push: true
+
+    - name: Log in to Quay
+      uses: docker/login-action@v1
+      with:
+        username: ${{ env.QUAY_USERNAME }}
+        password: ${{ env.QUAY_PASSWORD }}
+
+    - name: Push Docker Image to Quay
+      uses: docker/push-action@v1
+      with:
+        tags: quay.io/gamedoora/config-server:${{env.GITHUB_REF_SLUG}}
